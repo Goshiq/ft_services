@@ -11,5 +11,5 @@ minikube addons list
 #kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl apply -f srcs/metallb.yaml
 
-kubectl apply -f ./srcs/nginx_d.yaml
-kubectl expose deployment my-nginx --type=LoadBalancer --name=nginx-service
+docker build -t nginx:jmogo ./srcs/nginx/
+kubectl apply -f srcs/nginx.yaml
