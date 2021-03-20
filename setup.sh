@@ -13,3 +13,5 @@ kubectl apply -f srcs/metallb.yaml
 
 docker build -t nginx:jmogo ./srcs/nginx/
 kubectl apply -f srcs/nginx.yaml
+
+minikube dashboard
