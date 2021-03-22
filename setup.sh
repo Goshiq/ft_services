@@ -1,4 +1,5 @@
 #!/bin/bash
+
 minikube delete
 minikube start --driver=docker
 eval $(minikube -p minikube docker-env)
@@ -11,7 +12,13 @@ minikube addons list
 #kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl apply -f srcs/metallb.yaml
 
+#nginx
 docker build -t nginx:jmogo ./srcs/nginx/
 kubectl apply -f srcs/nginx.yaml
 
+#mysql
+docker build -t mysql:jmogo ./srcs/mysql/
+kubectl apply -f srcs/mysql.yaml
+
+#launch dashboard
 minikube dashboard
