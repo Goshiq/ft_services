@@ -1,0 +1,68 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: wordpress
+  namespace: default
+  uid: ccb22d9f-4621-44b3-89c7-3318da298578
+  resourceVersion: '832'
+  creationTimestamp: '2021-03-26T18:01:22Z'
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"wordpress","namespace":"default"},"spec":{"externalTrafficPolicy":"Local","loadBalancerIP":"192.168.49.112","ports":[{"name":"wp","port":5050,"protocol":"TCP","targetPort":5050}],"selector":{"app":"wordpress"},"type":"LoadBalancer"}}
+  managedFields:
+    - manager: kubectl-client-side-apply
+      operation: Update
+      apiVersion: v1
+      time: '2021-03-26T18:01:22Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+        'f:spec':
+          'f:externalTrafficPolicy': {}
+          'f:loadBalancerIP': {}
+          'f:ports':
+            .: {}
+            'k:{"port":5050,"protocol":"TCP"}':
+              .: {}
+              'f:name': {}
+              'f:port': {}
+              'f:protocol': {}
+              'f:targetPort': {}
+          'f:selector':
+            .: {}
+            'f:app': {}
+          'f:sessionAffinity': {}
+          'f:type': {}
+    - manager: dashboard
+      operation: Update
+      apiVersion: v1
+      time: '2021-03-26T18:04:15Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:loadBalancer':
+            'f:ingress': {}
+spec:
+  ports:
+    - name: wp
+      protocol: TCP
+      port: 5050
+      targetPort: 5050
+      nodePort: 30719
+  selector:
+    app: wordpress
+  clusterIP: 10.110.175.62
+  clusterIPs:
+    - 10.110.175.62
+  type: LoadBalancer
+  sessionAffinity: None
+  loadBalancerIP: 192.168.49.112
+  externalTrafficPolicy: Local
+  healthCheckNodePort: 31617
+status:
+  loadBalancer:
+    ingress:
+      - ip: 192.168.49.112

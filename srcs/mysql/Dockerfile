@@ -4,7 +4,6 @@ FROM alpine
 
 COPY ./init.sh .
 COPY ./mysql.cnf .
-COPY ./world.sql .
 
 VOLUME /var/lib/mysql
 

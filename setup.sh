@@ -12,6 +12,9 @@ minikube addons list
 #kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl apply -f srcs/metallb.yaml
 
+#get disk space
+kubectl apply -f srcs/vol.yaml
+
 #nginx
 docker build -t nginx:jmogo ./srcs/nginx/
 kubectl apply -f srcs/nginx.yaml
@@ -19,6 +22,10 @@ kubectl apply -f srcs/nginx.yaml
 #mysql
 docker build -t mysql:jmogo ./srcs/mysql/
 kubectl apply -f srcs/mysql.yaml
+
+#wordpress
+docker build -t wordpress:jmogo ./srcs/wordpress/
+kubectl apply -f srcs/wordpress.yaml
 
 #launch dashboard
 minikube dashboard

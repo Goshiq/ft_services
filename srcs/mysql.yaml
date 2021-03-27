@@ -21,7 +21,7 @@ spec:
         - containerPort: 3306
         volumeMounts:
         - name: mysql-store
-          mountPath: /var/lib/mysql
+          mountPath: /data
       volumes:
         - name: mysql-store
           persistentVolumeClaim:
@@ -34,11 +34,12 @@ metadata:
   labels:
     app: mysql
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 200Mi
 ---
 apiVersion: v1
 kind: Service
@@ -49,5 +50,7 @@ spec:
   selector:
     app: mysql
   ports:
-  - port: 3306
-    name: mysql
+  - name: mysql
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
