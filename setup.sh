@@ -27,5 +27,21 @@ kubectl apply -f srcs/mysql.yaml
 docker build -t wordpress:jmogo ./srcs/wordpress/
 kubectl apply -f srcs/wordpress.yaml
 
+#phpmyadmin
+docker build -t phpmyadmin:jmogo ./srcs/pma/
+kubectl apply -f srcs/pma.yaml
+
+#ftps
+docker build -t ftps:jmogo ./srcs/ftps/
+kubectl apply -f srcs/ftps.yaml
+
+#grafana
+docker build -t grafana:jmogo ./srcs/grafana/
+kubectl apply -f srcs/grafana.yaml
+
+#influxdb
+docker build -t influxdb:jmogo ./srcs/influxdb/
+kubectl apply -f srcs/influxdb.yaml
+
 #launch dashboard
 minikube dashboard

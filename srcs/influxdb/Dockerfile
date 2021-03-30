@@ -5,6 +5,6 @@ FROM alpine
 COPY ./init.sh .
 COPY ./telegraf.conf .
 
-EXPOSE 3306
+EXPOSE 8086
 
 ENTRYPOINT /bin/sh ./init.sh

@@ -1,56 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: influxdb
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: influxdb
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: influxdb
     spec:
       containers:
-      - name: mysql
-        image: mysql:jmogo
+      - name: influxdb
+        image: influxdb:jmogo
         imagePullPolicy: Never
         ports:
-        - containerPort: 3306
+        - containerPort: 8086
         volumeMounts:
-        - name: mysql
-          mountPath: /var/lib/mysql
+        - name: influxdb
+          mountPath: /var/lib/influxdb
       volumes:
-        - name: mysql
+        - name: influxdb
           persistentVolumeClaim:
-            claimName: mysql
+            claimName: influxdb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql
+  name: influxdb
   labels:
-    app: mysql
+    app: influxdb
 spec:
   storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 300Mi
+      storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: influxdb
+  labels:
+    app: influxdb
 spec:
   type: ClusterIP
   selector:
-    app: mysql
+    app: influxdb
   ports:
-  - name: mysql
+  - name: influxdb
     protocol: TCP
-    port: 3306
-    targetPort: 3306
+    port: 8086
+    targetPort: 8086
