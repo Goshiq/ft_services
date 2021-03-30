@@ -1,15 +1,31 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: whole-data
+  name: mysql-data
   labels:
     type: local
 spec:
-  storageClassName: manual
+  storageClassName: mysql-data
   capacity:
-    storage: 2Gi
+    storage: 1Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: influxdb-data
+  labels:
+    type: local
+spec:
+  storageClassName: influxdb-data
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
   hostPath:
     path: "/mnt/data"
     type: DirectoryOrCreate

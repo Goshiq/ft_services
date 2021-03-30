@@ -34,9 +34,9 @@ metadata:
   labels:
     app: influxdb
 spec:
-  storageClassName: manual
+  storageClassName: influxdb-data
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
