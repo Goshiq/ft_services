@@ -14,6 +14,7 @@ echo "update mysql.user set plugin='mysql_native_password' where user='root';" |
 #echo "DROP DATABASE test" | mysql -u root --skip-password
 echo "FLUSH PRIVILEGES;" | mysql -u root --skip-password
 
+#mysql wordpress -u root --password=  < mydb.sql
 sed -i 's/skip-networking/#skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 
 telegraf &

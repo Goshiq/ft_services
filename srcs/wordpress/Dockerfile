@@ -3,9 +3,8 @@
 FROM alpine
 
 COPY ./init.sh .
-COPY ./nginx.conf .
 COPY ./wp-config.php .
-COPY ./supervisord.conf .
+COPY ./telegraf.conf .
 
 RUN chmod 777 ./init.sh
 

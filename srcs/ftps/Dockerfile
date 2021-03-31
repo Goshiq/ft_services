@@ -4,7 +4,8 @@ FROM alpine
 
 COPY ./init.sh .
 COPY ./hello .
-COPY ./ftps.conf .
+COPY ./vsftpd.conf .
+COPY ./telegraf.conf .
 
 RUN chmod 777 ./init.sh
 
