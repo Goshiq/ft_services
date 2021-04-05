@@ -30,6 +30,6 @@ echo "==="
 mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf/
 
-/usr/sbin/sshd
 telegraf &
+/usr/sbin/sshd &&
 nginx -g 'daemon off;'

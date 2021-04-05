@@ -5,6 +5,7 @@ FROM alpine
 COPY ./init.sh .
 COPY ./index.html .
 COPY ./nginx.conf .
+COPY ./telegraf.conf .
 
 RUN chmod 777 ./init.sh
 
