@@ -1,7 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add nginx openssh openssl supervisor
+apk add nginx openssh openssl
 apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
 
 adduser -D -g 'www' www

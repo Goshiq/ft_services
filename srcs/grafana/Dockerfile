@@ -3,7 +3,8 @@
 FROM alpine
 
 COPY ./init.sh .
-#COPY ./grafana.db .
+COPY ./telegraf.conf .
+COPY ./grafana.db .
 
 RUN chmod 777 ./init.sh
 

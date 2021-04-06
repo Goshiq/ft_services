@@ -4,6 +4,7 @@ FROM alpine
 
 COPY ./init.sh .
 COPY ./telegraf.conf .
+COPY ./wordpress.sql .
 
 EXPOSE 3306
 
