@@ -8,7 +8,7 @@ adduser -D -g 'www' www
 mkdir -p /www
 chown -R www:www /www
 
-wget https://wordpress.org/latest.tar.gz
+#wget https://wordpress.org/latest.tar.gz
 tar -xf latest.tar.gz
 rm -f latest.tar.gz
 chmod 777 -R wordpress

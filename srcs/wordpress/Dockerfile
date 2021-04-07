@@ -3,7 +3,7 @@
 FROM alpine
 
 COPY ./init.sh .
-#COPY ./latest.tar.gz .
+COPY ./latest.tar.gz .
 COPY ./wp-config.php .
 COPY ./telegraf.conf .
 
