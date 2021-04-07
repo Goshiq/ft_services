@@ -38,6 +38,6 @@ spec:
     protocol: TCP
     targetPort: 21
   - port: 11111
-    name: pass
+    name: psv
     protocol: TCP
     targetPort: 11111

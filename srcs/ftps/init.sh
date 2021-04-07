@@ -15,6 +15,7 @@ mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf/
 
 mv ./vsftpd.conf /etc/vsftpd/
+touch /var/log/xferlog
 
 telegraf &
 vsftpd /etc/vsftpd/vsftpd.conf
