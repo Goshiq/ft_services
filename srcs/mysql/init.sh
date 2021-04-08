@@ -26,3 +26,18 @@ rc-service mariadb stop
 telegraf &
 /usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql"
 /usr/bin/mysqld_safe --datadir="/var/lib/mysql"
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep mariadb
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+	pgrep mysql
+	if [ $? != 0 ]; then
+		exit 3
+	fi
+done

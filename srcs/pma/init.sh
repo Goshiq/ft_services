@@ -20,3 +20,14 @@ mv ./telegraf.conf /etc/telegraf
 
 telegraf &
 php -S 0.0.0.0:5000 -t /www/phpMyAdmin-5.1.0-english/
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep php
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+done

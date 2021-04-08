@@ -8,6 +8,7 @@ adduser -D -g 'www' www
 mkdir -p /www
 chown -R www:www /www
 
+#uncomment if you want ot download the latest version of wp
 #wget https://wordpress.org/latest.tar.gz
 tar -xf latest.tar.gz
 rm -f latest.tar.gz
@@ -15,23 +16,19 @@ chmod 777 -R wordpress
 mv wordpress /www/
 mv wp-config.php /www/wordpress/
 
-#sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf
-#sed -i 's/;    extension=mysql.so/extension=mysql.so/g'  /etc/php7/php.ini
-
-#wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-#chmod +x wp-cli.phar
-#mv wp-cli.phar /usr/local/bin/wp
-#wp cli update
-#wp core check-update
-#wp core download --path='/www/wordpress'
-#mv wp-config.php /www/wordpress/
-#wp core install --path='/www/wordpress/' --url=http://192.168.49.112:5050/ --title='My_site' --admin_user='admin' --admin_email='a@b.ru' --admin_password=admin
-#wp user create --path='/www/wordpress/' me me@me.ru --role=administrator --user_pass=me
-#wp user create --path='/www/wordpress/' he he@he.ru --role=administrator --user_pass=he
-#wp user create --path='/www/wordpress/' she she@she.ru --role=administrator --user_pass=she
-
 mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf
 
 telegraf &
 php -S 0.0.0.0:5050 -t /www/wordpress/
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep php
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+done

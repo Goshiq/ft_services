@@ -1,7 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add nginx openssh openssl
+apk add nginx openssl openrc
 apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
 
 adduser -D -g 'www' www
@@ -31,5 +31,15 @@ mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf/
 
 telegraf &
-/usr/sbin/sshd &&
 nginx -g 'daemon off;'
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep nginx
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+done

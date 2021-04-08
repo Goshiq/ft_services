@@ -19,3 +19,14 @@ mv ./telegraf.conf /etc/telegraf
 
 telegraf &
 ./grafana-7.5.2/bin/grafana-server -homepath ./grafana-7.5.2
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep grafana
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+done

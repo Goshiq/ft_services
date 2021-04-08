@@ -15,3 +15,14 @@ mv ./vsftpd.conf /etc/vsftpd/
 
 telegraf &
 vsftpd /etc/vsftpd/vsftpd.conf
+
+while sleep 10; do
+	pgrep telegraf
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+	pgrep vsftpd
+	if [ $? != 0 ]; then
+		exit 2
+	fi
+done
