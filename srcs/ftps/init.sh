@@ -1,8 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add vsftpd
-apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
+apk add vsftpd telegraf
 
 mv ./hello /var/lib/ftp/
 
@@ -14,15 +13,20 @@ chmod 777 /var/lib/ftp/upload/
 mv ./vsftpd.conf /etc/vsftpd/
 
 telegraf &
-vsftpd /etc/vsftpd/vsftpd.conf
+vsftpd /etc/vsftpd/vsftpd.conf &
 
 while sleep 10; do
-	pgrep telegraf
-	if [ $? != 0 ]; then
-		exit 1
-	fi
-	pgrep vsftpd
-	if [ $? != 0 ]; then
-		exit 2
-	fi
+   ps aux | grep vsftpd | grep -q -v grep
+   FTP=$?
+   ps aux | grep telegraf | grep -q -v grep
+   TELEGRAF=$?
+   if [ $FTP -ne 0 ]; then
+     echo "No FTP >>> Reboot..."
+     exit 1
+   fi
+   if [ $TELEGRAF -ne 0 ]; then
+     echo "No Telegraf >>> Reboot..."
+     exit 1
+   fi
 done
+

@@ -10,4 +10,4 @@ RUN chmod 777 ./init.sh
 
 EXPOSE 5000
 
-ENTRYPOINT /bin/sh ./init.sh
+ENTRYPOINT ["/bin/sh", "-c", "./init.sh"]

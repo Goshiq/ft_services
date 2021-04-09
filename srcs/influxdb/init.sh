@@ -1,22 +1,25 @@
 #!/bin/sh
 
 apk update
-apk add influxdb
-apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
+apk add influxdb telegraf
 
 mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf/telegraf.conf
 
 telegraf &
-influxd run -config /etc/influxdb.conf
+influxd run -config /etc/influxdb.conf &
 
 while sleep 10; do
-	pgrep telegraf
-	if [ $? != 0 ]; then
-		exit 1
-	fi
-	pgrep influxdb
-	if [ $? != 0 ]; then
-		exit 2
-	fi
+   ps aux | grep influxd | grep -q -v grep
+   INFLUXDB=$?
+   ps aux | grep telegraf | grep -q -v grep
+   TELEGRAF=$?
+   if [ $INFLUXDB -ne 0 ]; then
+     echo "No InfluxDb >>> Reboot..."
+     exit 1
+   fi
+   if [ $TELEGRAF -ne 0 ]; then
+     echo "No Telegraf >>> Reboot..."
+     exit 1
+   fi
 done

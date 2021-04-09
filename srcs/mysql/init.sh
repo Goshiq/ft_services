@@ -1,8 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
-apk add mysql mysql-client openrc
+apk add mysql mysql-client openrc telegraf
 
 openrc default
 /etc/init.d/mariadb setup
@@ -24,20 +23,26 @@ sed -i 's/skip-networking/#skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 rc-service mariadb stop
 
 telegraf &
-/usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql"
-/usr/bin/mysqld_safe --datadir="/var/lib/mysql"
+/usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql" &
+/usr/bin/mysqld_safe --datadir="/var/lib/mysql" &
 
 while sleep 10; do
-	pgrep telegraf
-	if [ $? != 0 ]; then
-		exit 1
-	fi
-	pgrep mariadb
-	if [ $? != 0 ]; then
-		exit 2
-	fi
-	pgrep mysql
-	if [ $? != 0 ]; then
-		exit 3
-	fi
+   ps aux | grep mariadb | grep -q -v grep
+   MARIA=$?
+   ps aux | grep telegraf | grep -q -v grep
+   TELEGRAF=$?
+   ps aux | grep mysql | grep -q -v grep
+   MYSQL=$?
+   if [ $MARIA -ne 0 ]; then
+     echo "No MYSQL >>> Reboot..."
+     exit 1
+   fi
+   if [ $MYSQL -ne 0 ]; then
+     echo "No MYSQL >>> Reboot..."
+     exit 1
+   fi
+   if [ $TELEGRAF -ne 0 ]; then
+     echo "No Telegraf >>> Reboot..."
+     exit 1
+   fi
 done

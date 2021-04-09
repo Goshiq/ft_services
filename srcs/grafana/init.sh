@@ -1,8 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add wget
-apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
+apk add wget telegraf
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.33-r0/glibc-2.33-r0.apk
@@ -18,15 +17,20 @@ mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf
 
 telegraf &
-./grafana-7.5.2/bin/grafana-server -homepath ./grafana-7.5.2
+./grafana-7.5.2/bin/grafana-server -homepath ./grafana-7.5.2 &
 
 while sleep 10; do
-	pgrep telegraf
-	if [ $? != 0 ]; then
-		exit 1
-	fi
-	pgrep grafana
-	if [ $? != 0 ]; then
-		exit 2
-	fi
+   ps aux | grep grafana | grep -q -v grep
+   GRAFANA=$?
+   ps aux | grep telegraf | grep -q -v grep
+   TELEGRAF=$?
+   if [ $GRAFANA -ne 0 ]; then
+     echo "No Grafana >>> Reboot..."
+     exit 1
+   fi
+   if [ $TELEGRAF -ne 0 ]; then
+     echo "No Telegraf >>> Reboot..."
+     exit 1
+   fi
 done
+

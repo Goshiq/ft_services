@@ -11,4 +11,4 @@ RUN chmod 777 ./init.sh
 
 EXPOSE 21 11111
 
-ENTRYPOINT /bin/sh ./init.sh
+ENTRYPOINT ["/bin/sh", "-c", "./init.sh"]

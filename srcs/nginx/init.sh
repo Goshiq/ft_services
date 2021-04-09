@@ -1,8 +1,7 @@
 #!/bin/sh
 
 apk update
-apk add nginx openssl openrc
-apk add telegraf --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted --no-cache
+apk add nginx openssl telegraf
 
 adduser -D -g 'www' www
 mkdir /www
@@ -17,12 +16,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
 mv ./index.html /www/
 mv ./nginx.conf /etc/nginx/
 
-adduser -D user
-echo "user:password"|chpasswd
-
-ssh-keygen -A
-echo 'Jmogo was here' > /etc/motd
-
 echo "==="
 nginx -t
 echo "==="
@@ -31,15 +24,19 @@ mkdir -p /etc/telegraf
 mv ./telegraf.conf /etc/telegraf/
 
 telegraf &
-nginx -g 'daemon off;'
+nginx -g "daemon off;" &
 
 while sleep 10; do
-	pgrep telegraf
-	if [ $? != 0 ]; then
-		exit 1
-	fi
-	pgrep nginx
-	if [ $? != 0 ]; then
-		exit 2
-	fi
+   ps aux | grep "nginx: master" | grep -q -v grep
+   NGINX=$?
+   ps aux | grep telegraf | grep -q -v grep
+   TELEGRAF=$?
+   if [ $NGINX -ne 0 ]; then
+     echo "No NGiNX >>> Reboot..."
+     exit 1
+   fi
+   if [ $TELEGRAF -ne 0 ]; then
+     echo "No Telegraf >>> Reboot..."
+     exit 1
+   fi
 done
