@@ -23,8 +23,8 @@ sed -i 's/skip-networking/#skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 rc-service mariadb stop
 
 telegraf &
-/usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql" &
 /usr/bin/mysqld_safe --datadir="/var/lib/mysql" &
+#/usr/bin/mysql_install_db --user=mysql --datadir="/var/lib/mysql" &
 
 while sleep 10; do
    ps aux | grep mariadb | grep -q -v grep
