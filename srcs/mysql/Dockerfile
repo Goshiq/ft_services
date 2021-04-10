@@ -3,6 +3,7 @@
 FROM alpine
 
 COPY ./init.sh .
+COPY ./my.cnf .
 COPY ./telegraf.conf .
 COPY ./wordpress.sql .
 
