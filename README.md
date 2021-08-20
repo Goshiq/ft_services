@@ -1,5 +1,5 @@
 # ft_services
-We study Kubernetes, clusters, nods and pods
+We study Kubernetes, clusters, nodes and pods\
 There are several services used in this project:
 - NGiNX
 - Grafana
